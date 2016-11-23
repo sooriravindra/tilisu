@@ -1,7 +1,6 @@
 var fs = require('fs');
 var mustache = require('Mustache');
 var path = require('path');
-var http = require("http");
 var exec = require('child_process').exec;
 var express = require('express');
 var serv  = express();
@@ -9,7 +8,9 @@ var img_path = path.join(__dirname,'images');
 const electron =  require('electron');
 const {app, Menu, Tray, BrowserWindow} = electron;
 
+// Command to get the battery percentage
 const cmd_battery_percentage = 'WMIC Path Win32_Battery Get EstimatedChargeRemaining';
+// Command to get the battery status
 const cmd_battery_status      = 'WMIC Path Win32_Battery get Availability';
 
 const status_charging = 2;
@@ -19,6 +20,8 @@ const symbol_charging = "#[fg=colour82]⚡#[fg=colour253]";
 const symbol_critical = "#[bg=colour124]⚡#[fg=colour253]";
 const symbol_battery  = "⚡";
 const symbol_default  = "?";
+
+// Just dump all recieved notifications to following file
 const dump_file = 'dump.txt'
 
 var battery_percentage=0;
@@ -27,6 +30,7 @@ var notify = true;
 
 function get_symbol(status,percentage)
 {
+    // Return the battery symbol based on status and %
 	switch(status) {
 		case status_charging:
 			return symbol_charging;
@@ -40,14 +44,18 @@ function get_symbol(status,percentage)
 	}
 }
 function callback_battery_percentage(error, stdout, stderr){
+    // Implementation of this function is very specific to system 
 	var lines = stdout.split('\n');
 	var batterySum = 0;
+        var batteryCount = 0;
 	for(var i = 0;i < lines.length;i++){
+            // My PC has 2 batteries, handling that here
 		if(!isNaN(lines[i])){
 			batterySum += +lines[i];
+                        batteryCount += 1;
 		} 
 	}
-	battery_percentage =  batterySum/2;
+	battery_percentage =  batterySum/batteryCount;
 	battery_percentage = battery_percentage > 100? 100: battery_percentage;
 }
 
@@ -60,26 +68,6 @@ function callback_battery_status(error, stdout, stderr){
 		} 
 	}
 }
-
-function get_route(full_url)
-{
-	var i = full_url.indexOf('?');
-	if (i == -1)
-		return full_url;
-	else
-		return full_url.slice(0,i);
-}
-
-function get_param(name, url) {
-	if (!url) url = window.location.href;
-	name = name.replace(/[\[\]]/g, "\\$&");
-	var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-	    results = regex.exec(url);
-	if (!results) return null;
-	if (!results[2]) return '';
-	return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
 
 var appIcon = null;
 app.on('ready', () => {
