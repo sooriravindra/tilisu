@@ -1,0 +1,62 @@
+<html>
+<head>
+<style>
+body 
+{
+	font-family:"Segoe UI",Sans-serif;
+	margin:0;
+	border: solid 1px #000;
+	//background-color:#FFF;
+	background-color:#28283e;
+}
+
+#mele
+{
+	display:inline-block;
+	border-style:solid;
+	border-width:0 0 2px 0;
+	border-color:#444;
+	font-size:24px;
+	//font-family: 'Quicksand', sans-serif;
+	width:100%;
+	color:#ffff66;
+	background-color:#14141f;
+}
+
+#kelge
+{
+	//margin-top:5px;
+	color:#B9B9B9;
+	margin:10px;
+}
+#close:link, #close:visited{
+	color:#B9B9B9;
+	text-decoration: none;
+}
+#close:hover {
+	color: #ff3333;
+}
+
+</style>
+</head>
+<body>
+	<div id="mele">
+		<img style="vertical-align:middle;" src="http://localhost:8023/tilisu.png"  height="24" width="24"/>
+		<span id="title" style="vertical-align:middle; padding-left:5px">{{title}}</span>
+		<div style="float: right; padding-right:5px;">
+			<a id="close" href="javascript:window.close()">x</a>
+		</div>
+	</div>
+	<div id="kelge">
+		{{{ content }}}
+	</div>
+<script>
+	var title = document.getElementById('title').innerHTML;
+	if(title.length > 14)
+	{
+		title = title.slice(0,14) + "...";
+		document.getElementById('title').innerHTML = title;
+	}	
+</script>
+</body>
+</html>

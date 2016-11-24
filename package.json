@@ -4,11 +4,12 @@
   "main": "main.js",
   "dependencies": {
     "babel": "^6.5.2",
+    "electron-packager": "^8.3.0",
     "express": "^4.14.0",
     "mustache": "^2.2.1"
   },
   "scripts": {
-    "build": "babel main.js > main_es5.js",
+    "build": "electron-packager . tilisu --platform=win32 --arch=x64 --version=1.2.5",
     "start": "electron ."
   },
   "devDependencies": {
