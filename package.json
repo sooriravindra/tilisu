@@ -13,6 +13,7 @@
     "start": "electron ."
   },
   "devDependencies": {
-    "babel-cli": "^6.10.1"
+    "babel-cli": "^6.10.1",
+    "electron": "^1.4.13"
   }
 }
