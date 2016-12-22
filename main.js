@@ -18,7 +18,7 @@ const status_battery  = 3;
 
 const symbol_charging = "#[fg=colour82]⚡#[fg=colour253]";
 const symbol_critical = "#[bg=colour124]⚡#[fg=colour253]";
-const symbol_battery  = "⚡";
+const symbol_battery  = "⏺";
 const symbol_default  = "?";
 
 // Just dump all recieved notifications to following file
@@ -45,18 +45,19 @@ function get_symbol(status,percentage)
 }
 function callback_battery_percentage(error, stdout, stderr){
     // Implementation of this function is very specific to system 
-	var lines = stdout.split('\n');
-	var batterySum = 0;
-        var batteryCount = 0;
-	for(var i = 0;i < lines.length;i++){
-            // My PC has 2 batteries, handling that here
-		if(!isNaN(lines[i])){
-			batterySum += +lines[i];
-                        batteryCount += 1;
-		} 
-	}
-	battery_percentage =  batterySum/batteryCount;
-	battery_percentage = battery_percentage > 100? 100: battery_percentage;
+    var lines = stdout.split('\n');
+    var batterySum = 0;
+    var batteryCount = 0;
+    for(var i = 0;i < lines.length;i++){
+        // My PC has 2 batteries, handling that here
+        if(!isNaN(parseInt(lines[i]))){
+                batterySum += +lines[i];
+                batteryCount += 1;
+        } 
+    }
+    battery_percentage =  batterySum/batteryCount;
+    // Sometimes we end up with slightly greater than 100, due to rounding.
+    battery_percentage = battery_percentage > 100? 100: battery_percentage;
 }
 
 function callback_battery_status(error, stdout, stderr){
