@@ -16,10 +16,10 @@ const cmd_battery_status      = 'WMIC Path Win32_Battery get Availability';
 const status_charging = 2;
 const status_battery  = 3;
 
-const symbol_charging = "#[fg=colour82]⚡#[fg=colour253]";
-const symbol_critical = "#[bg=colour124]⚡#[fg=colour253]";
-const symbol_battery  = "⏺";
-const symbol_default  = "?";
+const symbol_charging = "#[fg=colour82]◉#[fg=colour253]";
+const symbol_critical = "#[bg=colour124]☠#[fg=colour253]";
+const symbol_battery  = "⊝";
+const symbol_default  = "♞";
 
 // Just dump all recieved notifications to following file
 const dump_file = 'dump.txt'
@@ -63,7 +63,7 @@ function callback_battery_percentage(error, stdout, stderr){
 function callback_battery_status(error, stdout, stderr){
 	var lines = stdout.split('\n');
 	for(var i = 0;i < lines.length;i++){
-		if(!isNaN(lines[i])){
+		if(!isNaN(parseInt(lines[i]))){
 			battery_status = +lines[i];
 			return;
 		} 
