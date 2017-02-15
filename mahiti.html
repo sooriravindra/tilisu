@@ -51,6 +51,9 @@ body
 		{{{ content }}}
 	</div>
 <script>
+        window.addEventListener('keydown', function(ev){
+            if(ev.which == 88) { window.close(); }
+        });
 	var title = document.getElementById('title').innerHTML;
 	if(title.length > 14)
 	{
